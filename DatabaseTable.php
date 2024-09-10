@@ -1,6 +1,7 @@
 <?php
 namespace WPHelper;
 use Exception;
+use wpdb;
 use function dbDelta;
 /**
  * Database Table Utility/Helper Class
@@ -13,7 +14,11 @@ class DatabaseTable{
 	/**
 	 * Util: CREATE TABLE
 	 * 
-	 * @global WPDB $wpdb
+	 * @since 0.1
+	 * 
+	 * @global wpdb $
+	 * 
+	 * @uses dbDelta
 	 * 
 	 * @param string $table_name table
 	 * @param string $schema SQL formatted string
@@ -55,8 +60,9 @@ class DatabaseTable{
 	 *
 	 * @note {meta_key_prefix}_id prefix must be the same to get $wpdb->{meta_key_prefix}meta to work
 	 * 
-	 * @global WPDB
-	 * @uses dbDelta
+	 * @since 0.1
+	 * 
+	 * @global wpdb $wpdb
 	 */
 	public static function create_meta_table( $meta_key_prefix  ){
 		global $wpdb;
@@ -81,9 +87,12 @@ class DatabaseTable{
 	 * 
 	 * Utility function to drop table completely from WPDB
 	 * 
-	 * @global WPDB $wpdb
+	 * @since 0.1
 	 * 
-	 * @param string table_name (fully prefixed)
+	 * @global wpdb $wpdb
+	 * 
+	 * @param string table_name Prefixed or non-prefixed table name.
+	 * 
 	 * @return void
 	 */
 	public static function drop_table( $table_name ){
@@ -106,9 +115,11 @@ class DatabaseTable{
 	 * 
 	 * Utility function to empty table completely
 	 * 
-	 * @global WPDB $wpdb
+	 * @since 0.1
 	 * 
-	 * @param string $table_name table
+	 * @global wpdb $wpdb
+	 * 
+	 * @param string $table_name Prefixed or non-prefixed table name.
 	 * 
 	 * @return void
 	 */
@@ -131,11 +142,13 @@ class DatabaseTable{
 	 * 
 	 * Get fully-prefixed table_name
 	 * 
-	 * @global WPDB $wpdb
+	 * @since 0.1
 	 * 
-	 * @param string $table_name (prefix-)table
+	 * @global wpdb $wpdb
 	 * 
-	 * @return string table 
+	 * @param string $table_name Prefixed or non-prefixed table name.
+	 * 
+	 * @return string Prefixed table name.
 	 */
 	public static function validate_table_name( $table_name ){
 		global $wpdb;
@@ -157,9 +170,11 @@ class DatabaseTable{
 	 * 
 	 * Test if table exists in database
 	 * 
-	 * @global WPDB $wpdb
+	 * @since 0.1
 	 * 
-	 * @param string $table_name table
+	 * @global wpdb $wpdb
+	 * 
+	 * @param string $table_name Prefixed or non-prefixed table name.
 	 * 
 	 * @return boolean Table exists (yes/no)
 	 */
@@ -180,10 +195,12 @@ class DatabaseTable{
 	/**
 	 * Util: ADD ROW
 	 * 
-	 * @global WPDB $wpdb
+	 * @since 0.1
 	 * 
-	 * @param string $table_name table
-	 * @param array $row_array data
+	 * @global wpdb $wpdb
+	 * 
+	 * @param string $table_name Prefixed or non-prefixed table name.
+	 * @param array $row_array   Data to insert (in column => value pairs). Both `$row_array` columns and `$row_array` values should be "raw" (neither should be SQL escaped). A primary key or unique index is required to perform a replace operation. Sending a null value will cause the column to be set to NULL - the corresponding format is ignored in this case.
 	 * 
 	 * @return (int|false) The number of rows inserted, or false on error.
 	 */
@@ -206,13 +223,13 @@ class DatabaseTable{
 	/**
 	 * Util: UPDATE ROW
 	 * 
-	 * @global WPDB $wpdb
+	 * @global wpdb $wpdb
 	 * 
-	 * @param string $table_name table
-	 * @param array $row_array data
-	 * @param array $where eg. [ 'ID'=>1 ]
+	 * @param string $table_name Prefixed or non-prefixed table name.
+	 * @param array  $row_array  Data to update (in column => value pairs). Both $row_array columns and $row_array values should be "raw" (neither should be SQL escaped). Sending a null value will cause the column to be set to NULL - the corresponding format is ignored in this case.
+	 * @param array  $where      A named array of WHERE clauses (in column => value pairs). Multiple clauses will be joined with ANDs. Both $where columns and $where values should be "raw". Sending a null value will create an IS NULL comparison - the corresponding format will be ignored in this case. eg. [ 'ID'=>1 ]
 	 * 
-	 * @return (int|false) The number of rows updated, or false on error.
+	 * @return int|false The number of rows updated, or false on error.
 	 */
 	public static function update_row( $table_name, $row_array, $where ){
 		global $wpdb;
