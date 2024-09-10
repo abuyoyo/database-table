@@ -242,4 +242,29 @@ class DatabaseTable{
 		
 	}
 
+
+	/**
+	 * Util: Select All
+	 * 
+	 * SELECT * FROM $table_name
+	 * 
+	 * @since 0.2
+	 * 
+	 * @global wpdb $wpdb
+	 * 
+	 * @param string $table_name Prefixed or non-prefixed table name.
+	 * @param string $output     (Optional) Any of ARRAY_A | ARRAY_N | OBJECT | OBJECT_K constants.
+	 * 
+	 * @return array|object|null All table rows.
+	 */
+	public static function select_all( $table_name, $output = OBJECT ){
+		global $wpdb;
+
+		return $wpdb->get_results(
+			'SELECT * FROM ' . static::validate_table_name( $table_name ),
+			$output
+		);
+		
+	}
+
 }
