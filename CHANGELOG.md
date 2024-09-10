@@ -1,5 +1,14 @@
 # WPHelper\DatabaseTable - Changelog
 
+## 0.2
+
+Release Date: 10 Sep 2024
+
+### Added
+
+- Add static method `select_all` to retrieve all table rows (`SELECT * FROM {$table_name}`).
+- Add changelog.
+
 ## 0.1 - Initial Commit
 
 Release Date: 24 Oct 2020
